@@ -1,15 +1,17 @@
 <%- include('./modules/header.ejs') %>
 
-<body>
-            <%- include('./modules/navigation.ejs') %>
+    <body>
+        <%- include('./modules/navigation.ejs') %>
             <section class="server-info-section">
-                <div>
+                <div class="info-header">
                     <h1>
                         <%= info.servername %>
                     </h1>
-                    <p><small>V <%= info.version %></small></p>
-                    <p><small>fps <%= metrics.serverfps %></small></p>
-                    <p><small>uptime <%= metrics.uptime %></small></p>
+                    <div class="info-metrics">
+                        <p><small>V <%= info.version %></small></p>
+                        <p><small>fps <%= metrics.serverfps %></small></p>
+                        <p><small>uptime <%= metrics.uptime %></small></p>
+                    </div>
                 </div>
                 <div>
                     <p>
@@ -17,9 +19,9 @@
                     </p>
                 </div>
             </section>
-            <main>
+            <main class="playerContainer">
                 <% players.forEach(p=> { %>
-                    <div class="playerCard" data-palyerId="<%= p.palyerId %>">
+                    <div class="playerCard">
                         <h4>
                             <%= p.name %>
                                 <span data-ping="<%= p.ping %>">
@@ -30,10 +32,14 @@
                             lvl: <%= p.level %>
                         </p>
                         <p>
-                            coords(x,y): <%= p.location_x %> <%= p.location_y %>
+                            coords(x,y): <%= p.location_x %>
+                                <%= p.location_y %>
                         </p>
+                        <button onclick="kickPlayer('<%= p.playerId %>')">Kick</button>
+                        <button onclick="banPlayer('<%= p.playerId %>')">Ban</button>
+                        <button onclick="unBanPlayer('<%= p.playerId %>')">unBan</button>
                     </div>
                     <% }) %>
             </main>
             <%- include('./modules/footer.ejs') %>
-        </body>
+    </body>

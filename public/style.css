@@ -1,27 +1,219 @@
-footer {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    padding-top: 5rem;
+/* Header Styling */
+.main-header {
+    background: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-footer div {
-    padding: 2rem;
+.main-header .header-title h1 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.main-header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 16px;
+}
+
+.main-header nav ul li {
     margin: 0;
 }
 
-header ul {
+.main-header nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1em;
+}
+
+.main-header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Footer styling */
+.main-footer {
+    background: #f9f9f9;
+    border-top: 1px solid #ddd;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main-footer .footer-section {
     display: flex;
-    list-style: none;
+    flex-direction: column;
 }
 
-header li {
-    padding: 1rem;
+.main-footer h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.2em;
+    color: #333;
 }
 
-header a {
+.main-footer p {
+    margin: 4px 0;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.main-footer p small {
+    font-size: 0.8em;
+    color: #777;
+}
+
+.main-footer a {
+    color: #333;
     text-decoration: none;
 }
 
-.server-info-section {
+.main-footer a:hover {
+    text-decoration: underline;
+}
 
+/* Server info */
+.server-info-section {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 16px 0;
+}
+
+/* Styling for the server info header */
+.server-info-section .info-header {
+    display: block;
+    margin-bottom: 16px;
+}
+
+.server-info-section h1 {
+    font-size: 2em;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+/* Styling for the metrics paragraphs */
+.server-info-section .info-metrics {
+    display: flex;
+    gap: 16px;
+}
+
+.server-info-section .info-metrics p {
+    margin: 0;
+}
+
+.server-info-section .info-metrics p small {
+    font-size: 0.9em;
+    color: #777;
+}
+
+/* Styling for the description paragraph */
+.server-info-section div:last-child p {
+    font-size: 1em;
+    color: #555;
+    margin-top: 16px;
+}
+
+/* Player cards */
+
+.playerContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 16px;
+}
+
+.playerCard {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin: 16px 0;
+    transition: transform 0.2s ease-in-out;
+    flex: 1 1 300px;
+    max-width: 300px;
+}
+
+.playerCard:hover {
+    transform: translateY(-4px);
+}
+
+.playerCard h4 {
+    /* font-size: 1.5em;  */
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.playerCard h4 span {
+    font-size: 0.8em;
+    color: #777;
+    margin-left: 8px;
+}
+
+.playerCard p {
+    margin: 8px 0;
+    color: #555;
+}
+
+@media (max-width: 600px) {
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .main-header nav ul {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .main-footer {
+        grid-template-columns: 1fr;
+    }
+    
+    .server-info-section {
+        padding: 12px;
+    }
+
+    .server-info-section h1 {
+        font-size: 1.5em;
+    }
+
+    .server-info-section .info-metrics {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .server-info-section .info-metrics p small {
+        font-size: 0.8em;
+    }
+
+    .server-info-section div:last-child p {
+        font-size: 0.9em;
+    }
+
+    .playerCard {
+        padding: 12px;
+    }
+
+    .playerCard h4 {
+        font-size: 1.2em;
+    }
+
+    .playerCard h4 span {
+        font-size: 0.7em;
+    }
+
+    .playerCard p {
+        font-size: 0.9em;
+    }
 }

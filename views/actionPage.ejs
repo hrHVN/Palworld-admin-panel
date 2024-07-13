@@ -1,15 +1,17 @@
-<%- includes('modules/header.ejs') %>
-    <%- includes('modules/navigation.ejs') %>
+<%- includes('./modules/header.ejs') %>
 
-        <body>
-            <section>
-                <div>
+    <body>
+        <%- includes('./modules/navigation.ejs') %>
+            <section class="server-info-section">
+                <div class="info-header">
                     <h1>
                         <%= info.servername %>
                     </h1>
-                    <p><small>V <%= info.version %></small></p>
-                    <p><small>fps <%= metrics.serverfps %></small></p>
-                    <p><small>uptime <%= metrics.uptime %></small></p>
+                    <div class="info-metrics">
+                        <p><small>V <%= info.version %></small></p>
+                        <p><small>fps <%= metrics.serverfps %></small></p>
+                        <p><small>uptime <%= metrics.uptime %></small></p>
+                    </div>
                 </div>
                 <div>
                     <p>
@@ -20,6 +22,5 @@
             <main>
 
             </main>
-        </body>
-
-        <%- includes('modules/footer.ejs') %>
+            <%- include('./modules/footer.ejs') %>
+    </body>

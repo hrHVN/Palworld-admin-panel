@@ -118,7 +118,7 @@ app.post('/kick', async (req, res) => {
             players.map(p => p.userId === userId)
             : { name: 'Demo', accountName: 'Demo', playerId: 'demo_000', userId: '0000', ip: 'x.x.x.x', ping: 0, location_x: 0, location_y: 0, level: 0 };
 
-        res.render('actionPage', { info, metrics, response: playerKick, player });
+        res.render('actionPage', { info, metrics, response: playerKick, player, mesage });
     }
     catch (err) {
         next(err)
@@ -140,7 +140,7 @@ app.post('/ban', async (req, res) => {
             players.map(p => p.userId === userId)
             : { name: 'Demo', accountName: 'Demo', playerId: 'demo_000', userId: '0000', ip: 'x.x.x.x', ping: 0, location_x: 0, location_y: 0, level: 0 };
 
-        res.render('actionPage', { info, metrics, ban: { response: playerBan, player } });
+        res.render('actionPage', { info, metrics, response: playerBan, player });
     }
     catch (err) {
         next(err)
@@ -156,11 +156,13 @@ app.post('/unban', async (req, res) => {
         let { userId, mesage } = req.body;
         let playerUnban = await fetchData(postPalyer('/unban', userId, mesage));
 
-        res.render('actionPage', {
-            info: info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' },
-            metrics: metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 },
-            unban: { response: playerUnban, palyer: players.map(p => p.userId === userId) }
-        });
+        info = info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' };
+        metrics = metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 };
+        let player = players ?
+            players.map(p => p.userId === userId)
+            : { name: 'Demo', accountName: 'Demo', playerId: 'demo_000', userId: '0000', ip: 'x.x.x.x', ping: 0, location_x: 0, location_y: 0, level: 0 };
+
+        res.render('actionPage', { info, metrics, response: playerUnban, player });
     }
     catch (err) {
         next(err)
@@ -171,16 +173,13 @@ app.get('/save', async (req, res) => {
     try {
         let info = await fetchData(config('get', '/info'));
         let metrics = await fetchData(config('get', '/metrics'));
-        let players = await fetchData(config('get', '/players'));
 
         let serverSave = await fetchData(config('post', '/save'));
 
-        res.render('actionPage', {
-            info: info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' },
-            metrics: metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 },
-            palyers: players || [{ name: 'Demo', accountName: 'Demo', playerId: 'demo_000', userId: '0000', ip: 'x.x.x.x', ping: 0, location_x: 0, location_y: 0, level: 0 }],
-            save: serverSave
-        });
+        info = info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' };
+        metrics = metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 };
+
+        res.render('actionPage', {info, metrics, response: serverSave});
     }
     catch (err) {
         next(err)
@@ -191,16 +190,18 @@ app.get('/shutdown', async (req, res) => {
     try {
         let info = fetchData(config('get', '/info'));
         let metrics = fetchData(config('get', '/metrics'));
-        let players = fetchData(config('get', '/players'));
 
         let { waittime, message } = req.body;
+        let serverSave = await fetchData(config('post', '/save'));
         let serverShutdown = await fetchData(bodyConf('post', '/shutdown', { waittime, message }));
 
+        info = info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' };
+        metrics = metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 };
+
         res.render('actionPage', {
-            info: info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' },
-            metrics: metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 },
-            palyers: players || [{ name: 'Demo', accountName: 'Demo', playerId: 'demo_000', userId: '0000', ip: 'x.x.x.x', ping: 0, location_x: 0, location_y: 0, level: 0 }],
-            stop: { response: serverShutdown, data: { waittime, message } }
+            info, metrics,
+            response: { serverShutdown, serverSave },
+            shuttdown: { waittime, message }
         });
     }
     catch (err) {
@@ -212,15 +213,15 @@ app.get('/stop', async (req, res) => {
     try {
         let info = fetchData(config('get', '/info'));
         let metrics = fetchData(config('get', '/metrics'));
-        let players = fetchData(config('get', '/players'));
 
         let crash = await fetchData(config('post', '/stop'));
 
+        info = info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' };
+        metrics = metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 };
+
         res.render('actionPage', {
-            info: info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' },
-            metrics: metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 },
-            palyers: players || [{ name: 'Demo', accountName: 'Demo', playerId: 'demo_000', userId: '0000', ip: 'x.x.x.x', ping: 0, location_x: 0, location_y: 0, level: 0 }],
-            stop: crash
+            info, metrics,
+            response: crash
         });
     }
     catch (err) {
