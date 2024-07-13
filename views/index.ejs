@@ -1,8 +1,8 @@
-<%- includes('modules/header.ejs') %>
-    <%- includes('modules/navigation.ejs') %>
+<%- include('./modules/header.ejs') %>
 
-        <body>
-            <section>
+<body>
+            <%- include('./modules/navigation.ejs') %>
+            <section class="server-info-section">
                 <div>
                     <h1>
                         <%= info.servername %>
@@ -18,7 +18,7 @@
                 </div>
             </section>
             <main>
-                <% palyers.forEach(p=> { %>
+                <% players.forEach(p=> { %>
                     <div class="playerCard" data-palyerId="<%= p.palyerId %>">
                         <h4>
                             <%= p.name %>
@@ -35,6 +35,5 @@
                     </div>
                     <% }) %>
             </main>
+            <%- include('./modules/footer.ejs') %>
         </body>
-
-        <%- includes('modules/footer.ejs') %>

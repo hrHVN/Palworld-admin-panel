@@ -1,5 +1,14 @@
 <%- include('./modules/header.ejs') %>
-<%- include('./modules/navigation.ejs') %>
 
-<h1><%= err.status %></h1>
-<pre><%= err.message %></pre>
+    <body>
+        <%- include('./modules/navigation.ejs') %>
+            <main>
+                <h1>
+                    <%= message %>
+                </h1>
+                <h2>
+                    <%= error.status %>
+                </h2>
+                <pre><%= error.stack %></pre>
+            </main>
+    </body>

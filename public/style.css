@@ -1,0 +1,27 @@
+footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding-top: 5rem;
+}
+
+footer div {
+    padding: 2rem;
+    margin: 0;
+}
+
+header ul {
+    display: flex;
+    list-style: none;
+}
+
+header li {
+    padding: 1rem;
+}
+
+header a {
+    text-decoration: none;
+}
+
+.server-info-section {
+
+}
