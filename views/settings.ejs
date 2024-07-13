@@ -1,0 +1,136 @@
+<%- include('./modules/header.ejs') %>
+
+    <body>
+        <%- include('./modules/navigation.ejs') %>
+            <section class="server-info-section">
+                <div class="info-header">
+                    <h1>
+                        <%= info.servername %>
+                    </h1>
+                    <div class="info-metrics">
+                        <p><small>V <%= info.version %></small></p>
+                        <p><small>fps <%= metrics.serverfps %></small></p>
+                        <p><small>uptime <%= metrics.uptime %></small></p>
+                    </div>
+                </div>
+                <div>
+                    <p>
+                        <%= info.description %>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Gameplay Settings -->
+            <main class="server-info-section">
+
+                <section class="info-header">
+                    <h4>Gameplay Settings</h4>
+                    <div class="info-metrics">
+                        <p><small>Day Time Speed Rate: <%= settings.DayTimeSpeedRate %></small></p>
+                        <p><small>Night Time Speed Rate: <%= settings.NightTimeSpeedRate %></small></p>
+                        <p><small>Exp Rate: <%= settings.ExpRate %></small></p>
+                    </div>
+                    <div class="info-metrics">
+                        <p><small>Pal Capture Rate: <%= settings.PalCaptureRate %></small></p>
+                        <p><small>Pal Spawn Num Rate: <%= settings.PalSpawnNumRate %></small></p>
+                        <p><small>Pal Damage Rate (Attack): <%= settings.PalDamageRateAttack %></small></p>
+                        <p><small>Pal Damage Rate (Defense): <%= settings.PalDamageRateDefense %></small></p>
+                        <p><small>Pal Stomach Decrease Rate: <%= settings.PalStomachDecreaseRate %></small></p>
+                        <p><small>Pal Stamina Decrease Rate: <%= settings.PalStaminaDecreaseRate %></small></p>
+                        <p><small>Pal Auto HP Regen Rate: <%= settings.PalAutoHPRegenRate %></small></p>
+                        <p><small>Pal Auto HP Regen Rate (In Sleep): <%= settings.PalAutoHPRegenRateInSleep %></small>
+                        </p>
+
+                    </div>
+                    <div class="info-metrics">
+                        <p><small>Player Damage Rate (Attack): <%= settings.PlayerDamageRateAttack %></small></p>
+                        <p><small>Player Damage Rate (Defense): <%= settings.PlayerDamageRateDefense %></small></p>
+                        <p><small>Player Stomach Decrease Rate: <%= settings.PlayerStomachDecreaseRate %></small></p>
+                        <p><small>Player Stamina Decrease Rate: <%= settings.PlayerStaminaDecreaseRate %></small></p>
+                        <p><small>Player Auto HP Regen Rate: <%= settings.PlayerAutoHPRegenRate %></small></p>
+                        <p><small>Player Auto HP Regen Rate (In Sleep): <%= settings.PlayerAutoHPRegenRateInSleep %>
+                                    </small></p>
+
+                    </div>
+                    <div class="info-metrics">
+                        <p><small>Build Object Damage Rate: <%= settings.BuildObjectDamageRate %></small></p>
+                        <p><small>Build Object Deterioration Damage Rate:
+                                <%=settings.BuildObjectDeteriorationDamageRate%></small></p>
+
+                        <p><small>Collection Object HP Rate: <%= settings.CollectionObjectHPRate %></small></p>
+                        <p><small>Collection Object Respawn Speed Rate: <%= settings.CollectionObjectRespawnSpeedRate %>
+                                    </small></p>
+                        <p><small>Collection Drop Rate: <%= settings.CollectionDropRate %></small></p>
+                        <p><small>Enemy Drop Item Rate: <%= settings.EnemyDropItemRate %></small></p>
+                    </div>
+                </section>
+
+                <!-- Multiplayer Settings -->
+                <section class="info-header">
+                    <h4>Multiplayer Settings</h4>
+                    <div class="info-metrics">
+                        <p><small>Death Penalty: <%= settings.DeathPenalty %></small></p>
+                        <p><small>Enable Player to Player Damage: <%= settings.bEnablePlayerToPlayerDamage %></small></p>
+                        <p><small>Enable Friendly Fire: <%= settings.bEnableFriendlyFire %></small></p>
+                        <p><small>Enable Invader Enemy: <%= settings.bEnableInvaderEnemy %></small></p>
+                        <p><small>Active UNKO: <%= settings.bActiveUNKO %></small></p>
+                        <p><small>Is Multiplay: <%= settings.bIsMultiplay %></small></p>
+                        <p><small>Is PvP: <%= settings.bIsPvP %></small></p>
+                    </div>
+                    <div class="info-metrics">
+                        <p><small>Enable Aim Assist (Pad): <%= settings.bEnableAimAssistPad %></small></p>
+                        <p><small>Enable Aim Assist (Keyboard): <%= settings.bEnableAimAssistKeyboard %></small></p>
+                    </div>
+                    <div class="info-metrics">
+                        <p><small>Drop Item Max Number: <%= settings.DropItemMaxNum %></small></p>
+                        <p><small>Drop Item Max Number (UNKO): <%= settings.DropItemMaxNum_UNKO %></small></p>
+                        <p><small>Drop Item Alive Max Hours: <%= settings.DropItemAliveMaxHours %></small></p>
+                    </div>
+                    <div class="info-metrics">
+                        <p><small>Auto Reset Guild No Online Players: <%= settings.bAutoResetGuildNoOnlinePlayers %></small></p>
+                        <p><small>Auto Reset Guild Time No Online Players: <%=settings.AutoResetGuildTimeNoOnlinePlayers%></small></p>
+                        <p><small>Guild Player Max Number: <%= settings.GuildPlayerMaxNum %></small></p>
+                        <p><small>Can Pickup Other Guild Death Penalty Drop:<%=settings.bCanPickupOtherGuildDeathPenaltyDrop %></small></p>
+                    </div>
+                    <div class="info-metrics">
+                        <p><small>Base Camp Max Number: <%= settings.BaseCampMaxNum %></small></p>
+                        <p><small>Base Camp Worker Max Number: <%= settings.BaseCampWorkerMaxNum %></small></p>
+                        <p><small>Pal Egg Default Hatching Time: <%= settings.PalEggDefaultHatchingTime %></small></p>
+                        <p><small>Work Speed Rate: <%= settings.WorkSpeedRate %></small></p>
+                        <p><small>Enable Non Login Penalty: <%= settings.bEnableNonLoginPenalty %></small></p>
+                        <p><small>Enable Fast Travel: <%= settings.bEnableFastTravel %></small></p>
+                        <p><small>Is Start Location Select By Map: <%= settings.bIsStartLocationSelectByMap %></small></p>
+                        <p><small>Exist Player After Logout: <%= settings.bExistPlayerAfterLogout %></small></p>
+                        <p><small>Enable Defense Other Guild Player: <%= settings.bEnableDefenseOtherGuildPlayer %></small></p>
+                        <p><small>Coop Player Max Number: <%= settings.CoopPlayerMaxNum %></small></p>
+                        <p><small>Server Player Max Number: <%= settings.ServerPlayerMaxNum %></small></p>
+                    </div>
+                </section>
+
+                <!-- Server Configuration -->
+                <section class="info-header">
+                    <h4>Server Configuration</h4>
+                    <div class="info-metrics">
+                        <p><small>Public Port: <%= settings.PublicPort %></small></p>
+                        <p><small>Public IP: <%= settings.PublicIP %></small></p>
+                        <p><small>Allow Connect Platform: <%= settings.AllowConnectPlatform %></small></p>
+                    </div>
+                    <div class="info-metrics">
+                        <p><small>RCON Enabled: <%= settings.RCONEnabled %></small></p>
+                        <p><small>RCON Port: <%= settings.RCONPort %></small></p>
+                        <p><small>REST API Enabled: <%= settings.RESTAPIEnabled %></small></p>
+                        <p><small>REST API Port: <%= settings.RESTAPIPort %></small></p>
+                    </div>
+                    <div class="info-metrics">
+                        <p><small>Region: <%= settings.Region %></small></p>
+                        <p><small>Use Authentication: <%= settings.bUseAuth %></small></p>
+                        <p><small>Ban List URL: <%= settings.BanListURL %></small></p>
+                        <p><small>Show Player List: <%= settings.bShowPlayerList %></small></p>
+                        <p><small>Use Backup Save Data: <%= settings.bIsUseBackupSaveData %></small></p>
+                        <p><small>Log Format Type: <%= settings.LogFormatType %></small></p>
+                    </div>
+                </section>
+            </main>
+
+            <%- include('./modules/footer.ejs') %>
+    </body>

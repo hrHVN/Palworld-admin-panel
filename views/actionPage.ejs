@@ -1,7 +1,7 @@
-<%- includes('./modules/header.ejs') %>
+<%- include('./modules/header.ejs') %>
 
     <body>
-        <%- includes('./modules/navigation.ejs') %>
+        <%- include('./modules/navigation.ejs') %>
             <section class="server-info-section">
                 <div class="info-header">
                     <h1>
@@ -20,7 +20,38 @@
                 </div>
             </section>
             <main>
-
+                <div>
+                    <p>
+                        <%=response  %>
+                    </p>
+                </div>
+                <% if (typeof mesage != undefined) { %>
+                    <div>
+                        <p>
+                            <%=  %>
+                        </p>
+                    </div>
+                <% } %>
+                <% if (player) { %>
+                    <div class="playerCard">
+                        <h4>
+                            <%= player.name %>
+                                <span data-ping="<%= p.ping %>">
+                                    <%= player.ping %> ms
+                                </span>
+                        </h4>
+                        <p>
+                            lvl: <%= player.level %>
+                        </p>
+                        <p>
+                            coords(x,y): <%= player.location_x %>
+                                <%= player.location_y %>
+                        </p>
+                        <button onclick="kickPlayer('<%= p.playerId %>')">Kick</button>
+                        <button onclick="banPlayer('<%= p.playerId %>')">Ban</button>
+                        <button onclick="unBanPlayer('<%= p.playerId %>')">unBan</button>
+                    </div>
+                <% } %>
             </main>
             <%- include('./modules/footer.ejs') %>
     </body>
