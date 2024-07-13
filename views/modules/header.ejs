@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- JSS -->
+    <script src="/js/script.js" defer></script>
+
+    <!-- End of JS and CSS -->
+    <% if (info.servername !='Default Palworld Server' && info) { %>
+        <title>
+            <%= info.servername %>
+        </title>
+        <% } else if(title) { %>
+            <title><%= title %></title>
+        <% } else { %>
+            <title>My Palworld Server</title>
+            <% } %>
+
+</head>

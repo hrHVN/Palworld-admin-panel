@@ -1,0 +1,40 @@
+<%- includes('modules/header.ejs') %>
+    <%- includes('modules/navigation.ejs') %>
+
+        <body>
+            <section>
+                <div>
+                    <h1>
+                        <%= info.servername %>
+                    </h1>
+                    <p><small>V <%= info.version %></small></p>
+                    <p><small>fps <%= metrics.serverfps %></small></p>
+                    <p><small>uptime <%= metrics.uptime %></small></p>
+                </div>
+                <div>
+                    <p>
+                        <%= info.description %>
+                    </p>
+                </div>
+            </section>
+            <main>
+                <% palyers.forEach(p=> { %>
+                    <div class="playerCard" data-palyerId="<%= p.palyerId %>">
+                        <h4>
+                            <%= p.name %>
+                                <span data-ping="<%= p.ping %>">
+                                    <%= p.ping %> ms
+                                </span>
+                        </h4>
+                        <p>
+                            lvl: <%= p.level %>
+                        </p>
+                        <p>
+                            coords(x,y): <%= p.location_x %> <%= p.location_y %>
+                        </p>
+                    </div>
+                    <% }) %>
+            </main>
+        </body>
+
+        <%- includes('modules/footer.ejs') %>

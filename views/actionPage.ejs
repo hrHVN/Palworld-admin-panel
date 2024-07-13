@@ -1,0 +1,25 @@
+<%- includes('modules/header.ejs') %>
+    <%- includes('modules/navigation.ejs') %>
+
+        <body>
+            <section>
+                <div>
+                    <h1>
+                        <%= info.servername %>
+                    </h1>
+                    <p><small>V <%= info.version %></small></p>
+                    <p><small>fps <%= metrics.serverfps %></small></p>
+                    <p><small>uptime <%= metrics.uptime %></small></p>
+                </div>
+                <div>
+                    <p>
+                        <%= info.description %>
+                    </p>
+                </div>
+            </section>
+            <main>
+
+            </main>
+        </body>
+
+        <%- includes('modules/footer.ejs') %>

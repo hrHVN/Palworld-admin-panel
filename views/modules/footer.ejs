@@ -1,0 +1,50 @@
+<footer>
+    <div>
+        <h3>Palworld-Admin</h3>
+        <p>
+            <small>
+                created by<a href="https://github.com/hrHVN/palworld-admin-panel">hrHVN</a>
+            </small>
+        </p>
+    </div>
+    <div>
+        <h3>Server-Info</h3>
+        <p>
+            <small>
+                <b>Server Version:</b>
+                <%= info.version %>
+            </small>
+        </p>
+        <p>
+            <b>Server servername:</b>
+            <%= info.servername %>
+        </p>
+        <p>
+            <b>Server description:</b>
+            <%= info.description %>
+        </p>
+        <p>
+            <b>FPS:</b>
+            <%= metrics.serverfps %>
+        </p>
+        <p>
+            <b>Server Frametime:</b>
+            <%= metrics.serverframetime %>
+        </p>
+        <p>
+            <b>Server uptime:</b>
+            <%= metrics.uptime %>
+        </p>
+    </div>
+    <div>
+        <h3>Players!</h3>
+        <p>
+            <b>Players Online:</b>
+            <%= metrics.currentplayernum %>
+        </p>
+        <p>
+            <b>Max Players:</b>
+            <%= metrics.maxplayernum %>
+        </p>
+    </div>
+</footer>
