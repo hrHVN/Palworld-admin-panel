@@ -45,13 +45,11 @@ const postPalyer = R.curry((url, message, userid) => {
 
 const fetchData = async (config) => {
     try {
-        const response = await axios.get(config);
-
+        const response = await axios(config);
         return response.data;
     } catch (error) {
-        return null;
         // console.error('Error fetching data from API:', error);
-        // throw error;
+        throw error;
     }
 };
 
@@ -67,7 +65,7 @@ app.use(express.urlencoded({ extended: false }));
 /*
     Routes 
  */
-app.get('/', async (req, res) => {
+app.get('/', async (req, res, next) => {
     try {
         let info = await fetchData(config('get', '/info'));
         let metrics = await fetchData(config('get', '/metrics'));
@@ -75,7 +73,7 @@ app.get('/', async (req, res) => {
 
         info = info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' };
         metrics = metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 };
-        players = players || [{ name: 'Demo', accountName: 'Demo', playerId: 'demo_000', userId: '0000', ip: 'x.x.x.x', ping: 0, location_x: 0, location_y: 0, level: 0 }];
+        players = players.players || [{ name: 'Demo', accountName: 'Demo', playerId: 'demo_000', userId: '0000', ip: 'x.x.x.x', ping: 0, location_x: 0, location_y: 0, level: 0 }];
 
         res.render('index', { info, metrics, players });
     }
@@ -84,7 +82,7 @@ app.get('/', async (req, res) => {
     }
 });
 
-app.post('/announce', async (req, res) => {
+app.post('/announce', async (req, res, next) => {
     try {
         let info = await fetchData(config('get', '/info'));
         let metrics = await fetchData(config('get', '/metrics'));
@@ -103,7 +101,7 @@ app.post('/announce', async (req, res) => {
     }
 });
 
-app.post('/kick', async (req, res) => {
+app.post('/kick', async (req, res, next) => {
     try {
         let info = await fetchData(config('get', '/info'));
         let metrics = await fetchData(config('get', '/metrics'));
@@ -115,7 +113,7 @@ app.post('/kick', async (req, res) => {
         info = info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' };
         metrics = metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 };
         let player = players ?
-            players.map(p => p.userId === userId)
+            players.players.map(p => p.userId === userId)
             : { name: 'Demo', accountName: 'Demo', playerId: 'demo_000', userId: '0000', ip: 'x.x.x.x', ping: 0, location_x: 0, location_y: 0, level: 0 };
 
         res.render('actionPage', { info, metrics, response: playerKick, player, mesage });
@@ -125,7 +123,7 @@ app.post('/kick', async (req, res) => {
     }
 });
 
-app.post('/ban', async (req, res) => {
+app.post('/ban', async (req, res, next) => {
     try {
         let info = await fetchData(config('get', '/info'));
         let metrics = await fetchData(config('get', '/metrics'));
@@ -137,7 +135,7 @@ app.post('/ban', async (req, res) => {
         info = info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' };
         metrics = metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 };
         let player = players ?
-            players.map(p => p.userId === userId)
+            players.players.map(p => p.userId === userId)
             : { name: 'Demo', accountName: 'Demo', playerId: 'demo_000', userId: '0000', ip: 'x.x.x.x', ping: 0, location_x: 0, location_y: 0, level: 0 };
 
         res.render('actionPage', { info, metrics, response: playerBan, player });
@@ -147,7 +145,7 @@ app.post('/ban', async (req, res) => {
     }
 });
 
-app.post('/unban', async (req, res) => {
+app.post('/unban', async (req, res, next) => {
     try {
         let info = fetchData(config('get', '/info'));
         let metrics = fetchData(config('get', '/metrics'));
@@ -159,7 +157,7 @@ app.post('/unban', async (req, res) => {
         info = info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' };
         metrics = metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 };
         let player = players ?
-            players.map(p => p.userId === userId)
+            players.players.map(p => p.userId === userId)
             : { name: 'Demo', accountName: 'Demo', playerId: 'demo_000', userId: '0000', ip: 'x.x.x.x', ping: 0, location_x: 0, location_y: 0, level: 0 };
 
         res.render('actionPage', { info, metrics, response: playerUnban, player });
@@ -169,7 +167,7 @@ app.post('/unban', async (req, res) => {
     }
 });
 
-app.get('/save', async (req, res) => {
+app.get('/save', async (req, res, next) => {
     try {
         let info = await fetchData(config('get', '/info'));
         let metrics = await fetchData(config('get', '/metrics'));
@@ -179,14 +177,14 @@ app.get('/save', async (req, res) => {
         info = info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' };
         metrics = metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 };
 
-        res.render('actionPage', {info, metrics, response: serverSave});
+        res.render('actionPage', { info, metrics, response: serverSave });
     }
     catch (err) {
         next(err)
     }
 });
 
-app.get('/shutdown', async (req, res) => {
+app.get('/shutdown', async (req, res, next) => {
     try {
         let info = fetchData(config('get', '/info'));
         let metrics = fetchData(config('get', '/metrics'));
@@ -209,7 +207,7 @@ app.get('/shutdown', async (req, res) => {
     }
 });
 
-app.get('/stop', async (req, res) => {
+app.get('/stop', async (req, res, next) => {
     try {
         let info = fetchData(config('get', '/info'));
         let metrics = fetchData(config('get', '/metrics'));
@@ -250,5 +248,6 @@ app.use(function (err, req, res, next) {
     Server Listener
 */
 app.listen(process.env.WEB_PORT || 3000, () => {
-    console.log(`server hosting at [http://localhost:${process.env.WEB_PORT || 3000}]`)
+    console.log(`server hosting at [http://localhost:${process.env.WEB_PORT || 3000}]`);
+    console.log(process.env.PAL_IP)
 });

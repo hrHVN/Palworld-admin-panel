@@ -20,6 +20,11 @@
                 </div>
             </section>
             <main class="playerContainer">
+                <% if (players.length == 0) { %>
+                 <div class="playerCard">
+                    <h4>No one is online at this moment...</h4>
+                 </div>
+                <% } else {%>
                 <% players.forEach(p=> { %>
                     <div class="playerCard">
                         <h4>
@@ -39,7 +44,7 @@
                         <button onclick="banPlayer('<%= p.playerId %>')">Ban</button>
                         <button onclick="unBanPlayer('<%= p.playerId %>')">unBan</button>
                     </div>
-                    <% }) %>
+                    <% })} %>
             </main>
             <%- include('./modules/footer.ejs') %>
     </body>
