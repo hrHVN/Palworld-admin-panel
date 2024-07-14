@@ -61,17 +61,23 @@ router.get('/save', async (req, res, next) => {
 
 router.get('/shutdown', async (req, res, next) => {
     try {
-        let info = fetchData(config('get', '/info'));
-        let metrics = fetchData(config('get', '/metrics'));
+        let info = await fetchData(config('get', '/info'));
+        let metrics = await fetchData(config('get', '/metrics'));
 
         let { waittime, message } = req.body;
+        // Default values used during development
+        waittime = waittime || "30";
+        message = message || "30 seconds to shutdown";
+
+        // save world then initiate shutdown sequence
         let serverSave = await fetchData(config('post', '/save'));
         let serverShutdown = await fetchData(bodyConf('post', '/shutdown', { waittime, message }));
 
         info = info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' };
         metrics = metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 };
 
-        console.info('GET /shutdown: [info, metrics, response]', info, metrics, serverSave, shuttdown);
+        // Log server responses and input to console 
+        console.info('GET /shutdown: [info, metrics, response]', info, metrics, serverSave, serverShutdown);
 
         res.render('actionPage', {
             info, metrics,
