@@ -53,3 +53,11 @@ _See the explanation up above if you have questions about the variables._
 ### Start comand
 Open a CLI tool and navigate to the server directory then write `npm start` in the comand line. 
 Now the server is running and ready to use.
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests.
