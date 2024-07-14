@@ -1,0 +1,16 @@
+[Unit]
+Description=PalWorld Server
+
+[Service]
+# in this example file the server user is "palworld", change this ass needed to utilize this systemd service-file
+# also make shure to let the palworld-user have sudo for these scripts to work.
+User=palworld
+Environment="LD_LIBRARY_PATH=/home/palworld/Steam/steamapps/common/PalServer/Pa>
+ExecStart=/home/palworld/Steam/steamapps/common/PalServer/PalServer.sh -publicl>
+ExecStop=/bin/kill -s QUIT $MAINPID
+WorkingDirectory=/home/palworld/Steam/steamapps/common/PalServer
+StandardOutput=append:/home/palworld/log/palworld.log
+StandardError=append:/home/palworld/log/err/palworld.log
+
+[Innstall]
+WantedBy=multi-user.target

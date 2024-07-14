@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const R = require('ramda');
 const { fetchData, config, bodyConf } = require('../utils/fetchData.js');
+const { sendSshComand, sendSFTP, sshComands } = require('../utils/ssh2.js');
+const organizeLogData = require('../utils/organizeLogData.js');
 
 router.get('/settings', async (req, res, next) => {
     try {
@@ -77,7 +79,7 @@ router.get('/shutdown', async (req, res, next) => {
         metrics = metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 };
 
         // Log server responses and input to console 
-        console.info('GET /shutdown: [info, metrics, response]', info, metrics, serverSave, serverShutdown);
+        console.info('GET /shutdown: [info, metrics, serverSave, serverShutdown, waittime, message]', info, metrics, serverSave, serverShutdown, waittime, message);
 
         res.render('actionPage', {
             info, metrics,
@@ -93,8 +95,8 @@ router.get('/shutdown', async (req, res, next) => {
 
 router.get('/stop', async (req, res, next) => {
     try {
-        let info = fetchData(config('get', '/info'));
-        let metrics = fetchData(config('get', '/metrics'));
+        let info = await fetchData(config('get', '/info'));
+        let metrics = await fetchData(config('get', '/metrics'));
 
         let crash = await fetchData(config('post', '/stop'));
 
@@ -107,6 +109,36 @@ router.get('/stop', async (req, res, next) => {
     }
     catch (err) {
         next(err)
+    }
+});
+
+router.get('/rcon/:command', async (req, res, next) => {
+    try {
+        let command;
+        let info = await fetchData(config('get', '/info'));
+        let metrics = await fetchData(config('get', '/metrics'));
+
+        info = info || { version: 'x.x.x.yy', servername: 'Default Palworld Server', description: 'Palworld Server' };
+        metrics = metrics || { serverfps: 0, currentplayernum: 0, serverframetime: 0, maxplayernum: 32, uptime: 0 };
+
+        switch (req.params.command) {
+            case 'readLog': command = sshComands.readLog; break;
+            case 'readErrorLog': command = sshComands.readErrorLog; break;
+            case 'startServer': command = sshComands.startServer; break;
+            case 'startCtl': command = sshComands.startCtl; break;
+        }
+
+        let output = await sendSshComand(command);
+        let data = organizeLogData(output);
+
+        console.info('GET /stop: [info, metrics, output]', info, metrics, output[0, 100]);
+
+        console.log(data.arrayOfObjects[0])
+
+        res.render('rcon', { info, metrics, data });
+    }
+    catch (error) {
+        next(error)
     }
 });
 

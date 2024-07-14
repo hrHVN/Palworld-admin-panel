@@ -1,0 +1,83 @@
+<%- include('./modules/header.ejs') %>
+
+    <body>
+        <%- include('./modules/navigation.ejs') %>
+            <section class="main-header">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="/manage/rcon/readErrorLog">
+                                read-Error-Log
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/manage/rcon/startServer">
+                                star-sterver: using script.sh
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/manage/rcon/startCtl">
+                                start-server: using systemCtl
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/manage/rcon/stopCtl">
+                                stop-server: using systemCtl
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/manage/rcon/updateServer">
+                                update-server
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </section>
+            <section class="server-info-section">
+                <div class="info-header">
+                    <h1>
+                        <%= info.servername %>
+                    </h1>
+                    <div class="info-metrics">
+                        <p><small>V <%= info.version %></small></p>
+                        <p><small>fps <%= metrics.serverfps %></small></p>
+                        <p><small>uptime <%= metrics.uptime %></small></p>
+                    </div>
+                </div>
+                <div>
+                    <p>
+                        <%= info.description %>
+                    </p>
+                </div>
+            </section>
+            <main>
+                <div>
+                    <h2>stdout</h2>
+                </div>
+                <section class="">
+                    <% data.arrayOfStrings.forEach(string=> { %>
+                        <div class="">
+                            <small>
+                                <%= string %>
+                            </small>
+                        </div>
+                        <% }) %>
+                </section>
+                <div>
+                    <h2>Palworld Log</h2>
+                </div>
+                <section class="playerContainer">
+                    <% data.arrayOfObjects.forEach(object=> { %>
+                        <div class="playerCard">
+                            <% for (const [key, value] of Object.entries(object)) {%>
+                                <p>
+                                    <%= key %>: <%= value %>
+                                </p>
+                                <% } %>
+                        </div>
+                        <% }) %>
+
+                </section>
+            </main>
+            <%- include('./modules/footer.ejs') %>
+    </body>

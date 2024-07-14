@@ -1,13 +1,12 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-require('dotenv').config()
+const createError = require('http-errors');
+require('dotenv').config();
 
 /* 
     Variables
 */
-const { sshConfig } = require('./utils/sshExecution');
-// const sshClient = require('ssh2').Client;
 
 /* 
 Functions
@@ -28,40 +27,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/', require('./routes/index'));
 app.use('/player', require('./routes/playerActions'));
 app.use('/manage', require('./routes/manageServer'));
-
-app.get('/execute-command', async (req, res, next) => {
-    const { Client } = require('ssh2');
-    const conn = new Client();
-
-    conn.on('ready', () => {
-        console.log('Client :: ready');
-
-        conn.exec('cat /home/palworld/log/palworld_2.log', (err, stream) => {
-            if (err) throw err;
-            let output = '';
-
-            stream.on('close', (code, signal) => {
-                // console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
-                conn.end();
-                res.send({ output: output });
-
-            })
-                .on('data', (data) => {
-                    console.log('STDOUT: ' + data);
-                    output += data;
-                })
-                .stderr.on('data', (data) => {
-                    console.log('STDERR: ' + data);
-                });
-        });
-
-    }).connect({
-        host: process.env.PAL_IP,
-        port: 22,
-        username: process.env.SSH_USER,
-        password: process.env.SSH_PWD
-    });
-});
 
 
 /*
