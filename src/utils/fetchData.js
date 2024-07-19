@@ -38,8 +38,9 @@ const fetchData = async (config) => {
         const response = await axios(config);
         return response.data;
     } catch (error) {
-        // console.error('Error fetching data from API:', error);
-        throw error;
+        console.error('Error fetching data from API:', error);
+        // throw error;
+        return null;
     }
 };
 
