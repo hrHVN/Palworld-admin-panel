@@ -130,7 +130,11 @@ router.get('/rcon/:command', async (req, res, next) => {
 
         let output = await sendSshComand(command);
         let data = organizeLogData(output);
-
+        data.arrayOfObjects.forEach(obj => {
+            if (obj.details[0] === ("/v1/api/metrics" || "/v1/api/info")){
+                delete obj;
+            }
+        });
         console.info('GET /stop: [info, metrics, output]', info, metrics, output[0, 100]);
 
         console.log(data.arrayOfObjects[0])

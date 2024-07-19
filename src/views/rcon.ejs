@@ -11,22 +11,22 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/manage/rcon/startServer">
+                            <a href="#/manage/rcon/startServer">
                                 star-sterver: using script.sh
                             </a>
                         </li>
                         <li>
-                            <a href="/manage/rcon/startCtl">
+                            <a href="#/manage/rcon/startCtl">
                                 start-server: using systemCtl
                             </a>
                         </li>
                         <li>
-                            <a href="/manage/rcon/stopCtl">
+                            <a href="#/manage/rcon/stopCtl">
                                 stop-server: using systemCtl
                             </a>
                         </li>
                         <li>
-                            <a href="/manage/rcon/updateServer">
+                            <a href="#/manage/rcon/updateServer">
                                 update-server
                             </a>
                         </li>
@@ -39,7 +39,7 @@
                         <%= info.servername %>
                     </h1>
                     <div class="info-metrics">
-                        <p><small>V <%= info.version %></small></p>
+                        <p><small><%= info.version %></small></p>
                         <p><small>fps <%= metrics.serverfps %></small></p>
                         <p><small>uptime <%= metrics.uptime %></small></p>
                     </div>
@@ -66,18 +66,34 @@
                 <div>
                     <h2>Palworld Log</h2>
                 </div>
-                <section class="playerContainer">
-                    <% data.arrayOfObjects.forEach(object=> { %>
-                        <div class="playerCard">
-                            <% for (const [key, value] of Object.entries(object)) {%>
-                                <p>
-                                    <%= key %>: <%= value %>
-                                </p>
-                                <% } %>
+                <% data.arrayOfObjects.forEach(object=> { %>
+                    <% if (object.playername == "REST") { %>
+                        <section class="playerContainer">
+                            <div class="playerCard">
+                                <% for (const [key, value] of Object.entries(object)) {%>
+                                    <p>
+                                        <%= key %>: <%= value %>
+                                    </p>
+                                    <% } %>
+                            </div>
+                    </section>     
+                    <% } else { %>
+                        <div>
+                            <h2>User Activity</h2>
                         </div>
-                        <% }) %>
-
-                </section>
+                        <section class="playerContainer">
+                            <div class="playerCard">
+                                <% for (const [key, value] of Object.entries(object)) {%>
+                                    <% if (value != userid) { %> 
+                                        <p>
+                                            <%= key %>: <%= value %>
+                                        </p>
+                                    <% } %>
+                                <% } %>
+                                </div>
+                            </section>
+                    <% } %>
+                <% }) %>
             </main>
             <%- include('./modules/footer.ejs') %>
     </body>
