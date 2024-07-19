@@ -66,9 +66,9 @@
                 <div>
                     <h2>Palworld Log</h2>
                 </div>
-                <% data.arrayOfObjects.forEach(object=> { %>
-                    <% if (object.playername == "REST") { %>
-                        <section class="playerContainer">
+                <section class="playerContainer">
+                        <% data.arrayOfObjects.forEach(object=> { %>
+                        <% if (object.playername == "REST") { %>
                             <div class="playerCard">
                                 <% for (const [key, value] of Object.entries(object)) {%>
                                     <p>
@@ -76,24 +76,32 @@
                                     </p>
                                     <% } %>
                             </div>
+                        <% } })%>
                     </section>     
-                    <% } else { %>
-                        <div>
-                            <h2>User Activity</h2>
-                        </div>
-                        <section class="playerContainer">
-                            <div class="playerCard">
-                                <% for (const [key, value] of Object.entries(object)) {%>
-                                    <% if (value != userid) { %> 
-                                        <p>
-                                            <%= key %>: <%= value %>
-                                        </p>
-                                    <% } %>
+
+                <div>
+                    <h2>User Activity</h2>
+                </div>
+                <section class="playerContainer">
+                    <% data.arrayOfObjects.forEach(object=> { %>
+                        <% if (object.playername != "REST") { %>
+                        <div class="playerCard">
+                            <% for (const [key, value] of Object.entries(object)) {%>
+                                <% if (value != "userid") { %> 
+                                    <p>
+                                        <%= key %>: <%= value %>
+                                    </p>
                                 <% } %>
-                                </div>
-                            </section>
-                    <% } %>
-                <% }) %>
+                            <% } %>
+                            <ul>
+                                <li>Last Connect: <%= playerLogFile[object.playername].timeSinceLastConnect %></li>
+                                <li>Last Join: <%= playerLogFile[object.playername].timeSinceLastJoin %></li>
+                                <li>Last Leave: <%= playerLogFile[object.playername].timeSinceLastLeave %></li>
+                                <li>Last Command: <%= playerLogFile[object.playername].timeSinceLastCommand %></li>
+                            </ul>
+                        </div>
+                    <% }}) %>
+                </section>
             </main>
             <%- include('./modules/footer.ejs') %>
     </body>

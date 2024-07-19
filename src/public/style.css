@@ -79,6 +79,48 @@
     text-decoration: underline;
 }
 
+/* Container for sidebar and main content */
+.container {
+    display: flex;
+    height: 100vh; /* Full viewport height */
+}
+
+/* Sidebar styling */
+.sidebar {
+    width: 250px;
+    background: #f9f9f9;
+    border-right: 1px solid #ddd;
+    padding: 16px;
+    box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
+/* Main content styling */
+.main-content {
+    flex: 1;
+    padding: 16px;
+}
+
+/* Player info in the sidebar */
+.player-info {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.player-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.player-info ul li {
+    margin-bottom: 8px;
+}
+
 /* Server info */
 .server-info-section {
     background: #f9f9f9;
@@ -180,6 +222,20 @@
         grid-template-columns: 1fr;
     }
     
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .main-content {
+        padding: 8px;
+    }
+
     .server-info-section {
         padding: 12px;
     }
