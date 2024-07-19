@@ -3,6 +3,7 @@ const R = require('ramda');
 const { fetchData, config, bodyConf } = require('../utils/fetchData.js');
 const { sendSshComand, sendSFTP, sshComands } = require('../utils/ssh2.js');
 const organizeLogData = require('../utils/organizeLogData.js');
+const { updatePlayerStatus, playerLogFile } = require('../utils/playerLogData.js');
 
 router.get('/settings', async (req, res, next) => {
     try {
@@ -130,16 +131,18 @@ router.get('/rcon/:command', async (req, res, next) => {
 
         let output = await sendSshComand(command);
         let data = organizeLogData(output);
-        data.arrayOfObjects.forEach(obj => {
-            if (obj.details[0] === ("/v1/api/metrics" || "/v1/api/info")){
-                delete obj;
-            }
+        
+        data.arrayOfObjects.forEach(updatePlayerStatus);
+        
+        data.arrayOfObjects = data.arrayOfObjects.filter(obj => {
+            return !(obj.details[0] == "/v1/api/metrics"
+                || obj.details[0] == "/v1/api/info"
+                || obj.details[0] == "/v1/api/players"
+            );
         });
-        console.info('GET /stop: [info, metrics, output]', info, metrics, output[0, 100]);
+        console.info('GET /stop: [info, metrics, output]', info, metrics, data, playerLogFile);
 
-        console.log(data.arrayOfObjects[0])
-
-        res.render('rcon', { info, metrics, data });
+        res.render('rcon', { info, metrics, data, playerLogFile });
     }
     catch (error) {
         next(error)

@@ -2,49 +2,58 @@
 
     <body>
         <%- include('./modules/navigation.ejs') %>
-            <section class="server-info-section">
-                <div class="info-header">
-                    <h1>
-                        <%= info.servername %>
-                    </h1>
-                    <div class="info-metrics">
-                        <p><small><%= info.version %></small></p>
-                        <p><small>fps <%= metrics.serverfps %></small></p>
-                        <p><small>uptime <%= metrics.uptime %></small></p>
+        <div class="container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <% Object.entries(playerLogFile).forEach(([playerId, player]) => { %>
+                    <div class="player-info">
+                        <p><%= player.playerName %> <small>(<%= player.currentLevel %>)</small></p>
+                        <ul>
+                            <li>Online: <%= player.timeSinceLastConnect %></li>
+                            <li>X: <%= player.location_x %></li>
+                            <li>Y: <%= player.location_y %></li>
+                        </ul>
                     </div>
-                </div>
-                <div>
-                    <p>
-                        <%= info.description %>
-                    </p>
-                </div>
-            </section>
-            <main class="playerContainer">
-                <% if (players.length == 0) { %>
-                 <div class="playerCard">
-                    <h4>No one is online at this moment...</h4>
-                 </div>
-                <% } else {%>
-                <% players.forEach(p=> { %>
-                    <div class="playerCard">
-                        <h4>
-                            <%= p.name %>
-                                <span data-ping="<%= p.ping %>">
-                                    <%= p.ping %> ms
-                                </span>
-                        </h4>
-                        <p>
-                            lvl: <%= p.level %>
-                        </p>
-                        <p>
-                            coords(x,y): <%= p.location_x %>
-                                <%= p.location_y %>
-                        </p>
-                        <button onclick="kickPlayer('<%= p.playerId %>')">Kick</button>
-                        <button onclick="banPlayer('<%= p.playerId %>')">Ban</button>
-                        <button onclick="unBanPlayer('<%= p.playerId %>')">unBan</button>
+                <% }) %>
+            </aside>
+    
+            <!-- Main Content -->
+            <main class="main-content">
+                <section class="server-info-section">
+                    <div class="info-header">
+                        <h1><%= info.servername %></h1>
+                        <div class="info-metrics">
+                            <p><small><%= info.version %></small></p>
+                            <p><small>fps <%= metrics.serverfps %></small></p>
+                            <p><small>uptime <%= metrics.uptime %></small></p>
+                        </div>
                     </div>
-                    <% })} %>
+                    <div>
+                        <p><%= info.description %></p>
+                    </div>
+                </section>
+                <section>
+                    <% if (players.length === 0 || players === null) { %>
+                        <div class="playerCard">
+                            <h4>No one is online at this moment...</h4>
+                        </div>
+                    <% } else { %>
+                        <% players.forEach(p => { %>
+                            <div class="playerCard">
+                                <h4>
+                                    <%= p.name %>
+                                    <span data-ping="<%= p.ping %>"><%= p.ping %> ms</span>
+                                </h4>
+                                <p>lvl: <%= p.level %></p>
+                                <p>coords(x,y): <%= p.location_x %> <%= p.location_y %></p>
+                                <!-- <button onclick="kickPlayer('<%= p.playerId %>')">Kick</button>
+                                <button onclick="banPlayer('<%= p.playerId %>')">Ban</button>
+                                <button onclick="unBanPlayer('<%= p.playerId %>')">UnBan</button> -->
+                            </div>
+                        <% }) %>
+                    <% } %>
+                </section>
             </main>
+        </div>
             <%- include('./modules/footer.ejs') %>
     </body>
