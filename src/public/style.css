@@ -121,6 +121,8 @@
     margin-bottom: 8px;
 }
 
+
+/* Styling for the server info header */
 /* Server info */
 .server-info-section {
     background: #f9f9f9;
@@ -131,7 +133,6 @@
     margin: 16px 0;
 }
 
-/* Styling for the server info header */
 .server-info-section .info-header {
     display: block;
     margin-bottom: 16px;
