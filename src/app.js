@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/', require('./routes/index'));
 app.use('/player', require('./routes/playerActions'));
 app.use('/manage', require('./routes/manageServer'));
-
+app.use('/map', require('./routes/map'));
 
 /*
     Error handler
@@ -43,7 +43,7 @@ app.use(function (err, req, res, next) {
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     // render the error page
     res.status(err.status || 500);
-    res.render('error', { title: 'error', err });
+    res.render('error', { info:{servername: 'Palworld Admin Panel'},title: 'error', err });
 });
 
 /* 
