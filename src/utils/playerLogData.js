@@ -1,6 +1,5 @@
 const fs = require('fs');  // Required for file operations
 const path = require('path');
-const moment = require('moment');
 
 const playerLogFilePath = path.join(__dirname, '../data/playerLogData.json');
 const playerLogFile = {};
@@ -29,7 +28,7 @@ function getTimeSince(eventTime) {
 function updatePlayerStatus(logEntry) {
     const { playername, event, timestamp, accountName } = logEntry;
     let player = playername || accountName;
-    console.log(player);
+    // console.log(player);
     if (player == ('REST' || '' || undefined)) return;
 
     // Check if player entry already exists
