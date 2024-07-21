@@ -1,0 +1,31 @@
+<%- include('./modules/mapHeader.ejs') %>
+
+    <body>
+        <%- include('./modules/navigation.ejs') %>
+            <section class="server-info-section">
+                <div class="info-header">
+                    <h2>
+                        <%= info.servername %>
+                    </h2>
+                    <div class="info-metrics">
+                        <p><small>
+                                <%= info.version %>
+                            </small> <small>
+                                fps <%= metrics.serverfps %>
+                            </small> <small>
+                                uptime <%= metrics.uptime %>
+                            </small></p>
+                    </div>
+                </div>
+            </section>
+
+            <main class="map-section">
+                <div class="map-container" id="mapContainer">
+                    <canvas id="gameMapCanvas" width="2200" height="1500"></canvas>
+                </div>
+                <div class="tooltip" id="tooltip"></div>
+            </main>
+
+
+            <%- include('./modules/footer.ejs') %>
+    </body>

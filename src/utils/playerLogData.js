@@ -1,8 +1,11 @@
 const fs = require('fs');  // Required for file operations
 const path = require('path');
+const transformCoordinates = require('./palworldCoordinates');
 
 const playerLogFilePath = path.join(__dirname, '../data/playerLogData.json');
-const playerLogFile = {};
+const playerLogFile = require(playerLogFilePath) || {};
+
+console.log(playerLogFile)
 
 function getTimeSince(eventTime) {
     let now = new Date();
@@ -51,7 +54,7 @@ function updatePlayerStatus(logEntry) {
     }
 
     const playerRecord = playerLogFile[player];
-    if (!accountName) {
+    if (event) {
         // Update based on event type
         switch (event) {
             case 'connect':
@@ -78,11 +81,13 @@ function updatePlayerStatus(logEntry) {
                 console.log(`Unknown event type: ${event}`);
                 break;
         }
-    } else {
-        playerRecord.currentLevel = logEntry.level;
-        playerRecord.location_x = logEntry.location_x;
-        playerRecord.location_y = logEntry.location_y;
     }
+    if (logEntry.level) {
+        console.log('LOGENTRY: \n', logEntry)
+        playerRecord.currentLevel = logEntry.level;
+        playerRecord.coords = transformCoordinates(logEntry.location_x, logEntry.location_y);
+    }
+
 
     // Save updated player data to JSON file
     fs.writeFileSync(playerLogFilePath, JSON.stringify(playerLogFile, null, 2), 'utf8');

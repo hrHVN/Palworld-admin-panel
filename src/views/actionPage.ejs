@@ -44,8 +44,8 @@
                             lvl: <%= player.level %>
                         </p>
                         <p>
-                            coords(x,y): <%= player.location_x %>
-                                <%= player.location_y %>
+                            coords(x,y): <%= player.coords.x %>
+                                <%= player.coords.y %>
                         </p>
                         <button onclick="kickPlayer('<%= p.playerId %>')">Kick</button>
                         <button onclick="banPlayer('<%= p.playerId %>')">Ban</button>
