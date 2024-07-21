@@ -1,6 +1,5 @@
 const fs = require('fs');  // Required for file operations
 const path = require('path');
-const moment = require('moment');
 const transformCoordinates = require('./palworldCoordinates');
 
 const playerLogFilePath = path.join(__dirname, '../data/playerLogData.json');
