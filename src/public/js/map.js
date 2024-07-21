@@ -1,9 +1,9 @@
 const mapDimensions = {
-    width: 2200,
-    height: 2200,
+    width: 1500,
+    height: 1500,
     // ratio: 1.46,
-    ratio: 2200 / 2200 ,
-    img: '/img/Palpagos_Islands.webp',
+    ratio: 1500 / 1500 ,
+    img: '/img/Palpagos_Island_temp.png',
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -131,9 +131,9 @@ function playerCoordsToCanvasCoords(playerX, playerY, scaleX, scaleY) {
     const minY = -1000;
     const maxY = 1000;
 
-    let y = parseInt(((playerX - minX) / (maxX - minX)) * mapDimensions.width * scaleX);
+    let x = parseInt(((playerX - minX) / (maxX - minX)) * mapDimensions.width * scaleX);
 
-    let x = parseInt(((maxY - playerY) / (maxY - minY)) * mapDimensions.height * scaleY);
+    let y = parseInt(((maxY - playerY) / (maxY - minY)) * mapDimensions.height * scaleY);
     console.log('transformCoordinates: ', x, y, playerX, playerY)
     return {
         x, y
