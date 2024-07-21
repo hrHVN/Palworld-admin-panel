@@ -1,6 +1,6 @@
 {
   "name": "palworld-admin-panel",
-  "version": "1.0.2",
+  "version": "1.1.2",
   "description": "A administration panel for palworld servers. Give users the ability to see whos online and the status of the server.",
   "main": "app.js",
   "scripts": {
