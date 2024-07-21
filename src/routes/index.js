@@ -14,10 +14,10 @@ router.get('/', async (req, res, next) => {
         players = players.players || [{ name: 'Demo', accountName: 'Demo', playerId: 'demo_000', userId: '0000', ip: 'x.x.x.x', ping: 0, location_x: 0, location_y: 0, level: 0 }];
     
         players.forEach(updatePlayerStatus);
+        let data = Object.values(playerLogFile);
+        console.info('GET /: [info, metrics, players]', info, metrics, players, data);
 
-        console.info('GET /: [info, metrics, players]', info, metrics, players, playerLogFile);
-
-        res.render('index', { info, metrics, players, playerLogFile });
+        res.render('index', { info, metrics, players, data });
     }
     catch (err) {
         next(err)

@@ -5,13 +5,13 @@
         <div class="container">
             <!-- Sidebar -->
             <aside class="sidebar">
-                <% Object.entries(playerLogFile).forEach(([playerId, player]) => { %>
+                <% data.forEach(player => { %>
                     <div class="player-info">
                         <p><%= player.playerName %> <small>(<%= player.currentLevel %>)</small></p>
                         <ul>
                             <li>Online: <%= player.timeSinceLastConnect %></li>
-                            <li>X: <%= player.location_x %></li>
-                            <li>Y: <%= player.location_y %></li>
+                            <li>X: <%= player.coords.x %></li>
+                            <li>Y: <%= player.coords.y %></li>
                         </ul>
                     </div>
                 <% }) %>
@@ -42,10 +42,10 @@
                             <div class="playerCard">
                                 <h4>
                                     <%= p.name %>
-                                    <span data-ping="<%= p.ping %>"><%= p.ping %> ms</span>
+                                    <span><%= parseFloat(p.ping,2) %> ms</span>
                                 </h4>
                                 <p>lvl: <%= p.level %></p>
-                                <p>coords(x,y): <%= p.location_x %> <%= p.location_y %></p>
+                                <p>coords(x,y): <%= //p.coords.x %> <%= //p.coords.y %></p>
                                 <!-- <button onclick="kickPlayer('<%= p.playerId %>')">Kick</button>
                                 <button onclick="banPlayer('<%= p.playerId %>')">Ban</button>
                                 <button onclick="unBanPlayer('<%= p.playerId %>')">UnBan</button> -->
