@@ -25,16 +25,16 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/live', async (req, res, next) => {
-    let players = await fetchData(config('get', '/players'));
+    let { players } = await fetchData(config('get', '/players'));
     let serverLog = await sendSshComand(sshComands.readLog);
     let log = organizeLogData(serverLog)
 
     log.arrayOfObjects.forEach(updatePlayerStatus);
 
-    if (typeof players == Array) players.forEach(updatePlayerStatus);
+    if (players.length != 0) players.forEach(updatePlayerStatus);
 
     let data = Object.values(playerLogFile);
-    console.log(data);
+    // console.log(players);
 
     res.status(200).send({ players: data });
 });

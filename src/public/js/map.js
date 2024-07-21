@@ -1,17 +1,25 @@
+const mapDimensions = {
+    width: 2200,
+    height: 2200,
+    // ratio: 1.46,
+    ratio: 2200 / 2200 ,
+    img: '/img/Palpagos_Islands.webp',
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Fetch data from the server
     fetch('/map/live')
         .then(response => response.json())
         .then(data => {
             // Destructure the data
-            const { players } = data;
+            let { players } = data;
 
             // Draw the map and players
-            const canvas = document.getElementById('gameMapCanvas');
-            const ctx = canvas.getContext('2d');
-            const tooltip = document.getElementById('tooltip');
-            const mapImage = new Image();
-            mapImage.src = '/img/Palpagos_Islands.webp';
+            let canvas = document.getElementById('gameMapCanvas');
+            let ctx = canvas.getContext('2d');
+            let tooltip = document.getElementById('tooltip');
+            let mapImage = new Image();
+            mapImage.src = mapDimensions.img;
 
             mapImage.onload = () => {
                 resizeCanvas();
@@ -35,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetch('/map/live')
                     .then(response => response.json())
                     .then(data => {
-                        const { players } = data;
+                        let { players } = data;
                         console.log('Data recieved: ', data)
                         updatePlayerPositions(ctx, players, mapImage);
                     });
@@ -45,12 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function resizeCanvas() {
-    const canvas = document.getElementById('gameMapCanvas');
-    const container = document.getElementById('mapContainer');
-    let aspectRatio = 2200 / 1500;
+    let canvas = document.getElementById('gameMapCanvas');
+    let container = document.getElementById('mapContainer');
 
     canvas.width = container.clientWidth;
-    canvas.height = container.clientWidth / aspectRatio;
+    canvas.height = container.clientWidth / mapDimensions.ratio;
 
     container.style.height = `${canvas.height}px`
 }
@@ -63,19 +70,21 @@ function drawMap(ctx, mapImage) {
 
 function updatePlayerPositions(ctx, players, mapImage) {
     const canvas = document.getElementById('gameMapCanvas');
-    const scaleX = canvas.width / 2200;
-    const scaleY = canvas.height / 1500;
+    const scaleX = canvas.width / mapDimensions.width;
+    const scaleY = canvas.height / mapDimensions.height;
+
     drawMap(ctx, mapImage);
 
     players.forEach(player => {
-        if (player.location_x || player.location_y) drawPlayer(ctx, player, scaleX, scaleY);
+        if (player.coords.x || player.coords.y) {
+            let { x, y } = playerCoordsToCanvasCoords(player.coords.x, player.coords.y, scaleX, scaleY)
+            drawPlayer(ctx, x, y);
+        }
     });
+
 }
 
-function drawPlayer(ctx, player, scaleX, scaleY) {
-    let { location_x, location_y } = player;
-    let { x, y } = transformCoordinates(location_x, location_y, scaleX, scaleY);
-    // console.log('draw player: ', x, y)
+function drawPlayer(ctx, x, y) {
     ctx.beginPath();
     ctx.arc(x, y, 10, 0, 2 * Math.PI, false);
 
@@ -90,25 +99,24 @@ function drawPlayer(ctx, player, scaleX, scaleY) {
 
 function handleMouseMove(event, canvas, players, tooltip) {
     const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    const scaleX = canvas.width / 2200;
-    const scaleY = canvas.height / 1500;
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+    const scaleX = canvas.width / mapDimensions.width;
+    const scaleY = canvas.height / mapDimensions.height;
 
     let found = false;
     players.forEach(player => {
-        let { location_x, location_y } = player;
-        let { x: playerX, y: playerY } = transformCoordinates(location_x, location_y, scaleX, scaleY);
-        let distance = Math.sqrt(Math.pow(x - playerX, 2) + Math.pow(y - playerY, 2));
+        let { x, y } = playerCoordsToCanvasCoords(player.coords.x, player.coords.y, scaleX, scaleY);
+        let distance = Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2));
 
-        // console.log(player.playerName, x, y)
+        // console.log(player.playerName, x, y, player.coords)
 
         if (distance < 10) {
             found = true;
             tooltip.style.display = 'block';
-            tooltip.style.left = `${x + 15}px`;
-            tooltip.style.top = `${y + 15}px`;
-            tooltip.innerHTML = `Name: ${player.name}<br>Level: ${player.level}<br>X: ${location_x} Y: ${location_y}`;
+            tooltip.style.left = `${mouseX + 15}px`;
+            tooltip.style.top = `${mouseY + 15}px`;
+            tooltip.innerHTML = `Name: ${player.playerName}<br>Level: ${player.level}<br>X: ${player.coords.x} Y: ${player.coords.y}`;
         }
     });
 
@@ -117,27 +125,17 @@ function handleMouseMove(event, canvas, players, tooltip) {
     }
 }
 
-function transformCoordinates(location_x, location_y, scaleX, scaleY) {
-    /* const minX = -582888.0;
-    const maxX = 335112.0;
+function playerCoordsToCanvasCoords(playerX, playerY, scaleX, scaleY) {
+    const minX = -1000;
+    const maxX = 1000;
+    const minY = -1000;
+    const maxY = 1000;
 
-    const minY = -301000.0;
-    const maxY = 617000.0;
-    
-    const x = ((location_x - minX) / (maxX - minX)) * 2200 * scaleX;
-    const y = ((maxY - location_y) / (maxY - minY)) * 1500 * scaleY; */
-    
-    let transl_x = 123888;
-    let transl_y = 158000;
-    let _scale = 459;
+    let y = parseInt(((playerX - minX) / (maxX - minX)) * mapDimensions.width * scaleX);
 
-    // Convert from ingame .sav files to map coords
-    let x = ((location_x + transl_x) / _scale);
-    let y = ((location_y + transl_y) / _scale);
-    // goal -531, 33
-    console.log(x,y);
+    let x = parseInt(((maxY - playerY) / (maxY - minY)) * mapDimensions.height * scaleY);
+    console.log('transformCoordinates: ', x, y, playerX, playerY)
     return {
-        x: x,
-        y: y,
+        x, y
     }
 }
