@@ -1,3 +1,42 @@
 {
-  
+  "demo": {
+    "playerName": "demo",
+    "lastConnect": "2024-07-21 12:46:06",
+    "lastJoin": "2024-07-21 12:46:11",
+    "lastLeave": "2024-07-21 13:14:08",
+    "lastCommand": "2024-07-20 23:18:22",
+    "lastActivity": "2024-07-21 13:14:08",
+    "timeSinceLastConnect": "2 hour(s) ago",
+    "timeSinceLastJoin": "2 hour(s) ago",
+    "timeSinceLastLeave": "1 hour(s) ago",
+    "timeSinceLastCommand": "15 hour(s) ago",
+    "currentLevel": 19,
+    "coords": {
+      "x": -554,
+      "y": -6,
+      "savX": -126835.1015625,
+      "savY": -412404.296875
+    }
+  },
+  "HrHVN": {
+    "playerName": "HrHVN",
+    "lastConnect": "2024-07-21 15:20:51",
+    "lastJoin": "2024-07-21 15:20:55",
+    "lastLeave": "2024-07-21 16:12:34",
+    "lastCommand": "2024-07-20 23:18:22",
+    "lastActivity": "2024-07-21 16:12:34",
+    "timeSinceLastConnect": "1 hour(s) ago",
+    "timeSinceLastJoin": "1 hour(s) ago",
+    "timeSinceLastLeave": "39 minute(s) ago",
+    "timeSinceLastCommand": "17 hour(s) ago",
+    "currentLevel": 19,
+    "location_x": null,
+    "location_y": null,
+    "coords": {
+      "x": -554,
+      "y": -4,
+      "savX": -126110.921875,
+      "savY": -412506.96875
+    }
+  }
 }

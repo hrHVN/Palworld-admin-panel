@@ -1,59 +1,96 @@
 const mapDimensions = {
-    width: 1500,
-    height: 1500,
+    width: 2200,
+    height: 2200,
     // ratio: 1.46,
-    ratio: 1500 / 1500 ,
+    ratio: 2200 / 2200,
     img: '/img/Palpagos_Island_temp.png',
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    let scale = 1;
+    let offsetX = 0;
+    let offsetY = 0;
+    let startDragOffsetX = 0;
+    let startDragOffsetY = 0;
+    let isDragging = false;
+    let players = [];
+    // Draw the map and players
+    let canvas = document.getElementById('gameMapCanvas');
+    let ctx = canvas.getContext('2d');
+    let tooltip = document.getElementById('tooltip');
+    let mapImage = new Image();
+    mapImage.src = mapDimensions.img;
+
+    mapImage.onload = () => {
+        resizeCanvas(canvas);
+        // drawMap(ctx, mapImage);
+        updatePlayerPositions(ctx, players, canvas, mapImage)
+    };
+
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        // drawMap(ctx, mapImage);
+        updatePlayerPositions(ctx, players, canvas, mapImage)
+    });
+
+    canvas.addEventListener('mousemove', (event) => {
+        handleMouseMove(event, canvas, players, tooltip);
+    });
+
+    // Handle zoom
+    // canvas.addEventListener('wheel', event => {
+    //     let mouseX = event.clientX - canvas.offsetLeft;
+    //     let mouseY = event.clientY - canvas.offsetTop;
+    //     let wheel = event.deltaY < 0 ? 1 : -1;
+    //     let zoom = Math.exp(wheel * 0.1);
+    //     ctx.translate(mouseX, mouseY);
+    //     ctx.scale(zoom, zoom);
+    //     ctx.translate(-mouseX, -mouseY);
+    //     scale *= zoom;
+    //     event.preventDefault();
+    //     drawMap(ctx);
+    // });
+
+    // Handle drag start
+    canvas.addEventListener('mousedown', event => {
+        isDragging = true;
+        startDragOffsetX = event.clientX - offsetX;
+        startDragOffsetY = event.clientY - offsetY;
+    });
+
+    // Handle drag end
+    canvas.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
     // Fetch data from the server
     fetch('/map/live')
         .then(response => response.json())
         .then(data => {
             // Destructure the data
-            let { players } = data;
-
-            // Draw the map and players
-            let canvas = document.getElementById('gameMapCanvas');
-            let ctx = canvas.getContext('2d');
-            let tooltip = document.getElementById('tooltip');
-            let mapImage = new Image();
-            mapImage.src = mapDimensions.img;
-
-            mapImage.onload = () => {
-                resizeCanvas();
-                drawMap(ctx, mapImage);
-                updatePlayerPositions(ctx, players, mapImage);
-            };
-
-            window.addEventListener('resize', () => {
-                resizeCanvas();
-                drawMap(ctx, mapImage);
-                updatePlayerPositions(ctx, players, mapImage);
-            });
-
-            canvas.addEventListener('mousemove', (event) => {
-                handleMouseMove(event, canvas, players, tooltip);
-            });
-
-            setInterval(() => {
-                console.log('Updating player pos...');
-
-                fetch('/map/live')
-                    .then(response => response.json())
-                    .then(data => {
-                        let { players } = data;
-                        console.log('Data recieved: ', data)
-                        updatePlayerPositions(ctx, players, mapImage);
-                    });
-            }, 10 * 1000);
+            players = data.players;
+            console.log('Data recieved: ', data)
+            updatePlayerPositions(ctx, players, canvas, mapImage)
         })
         .catch(error => console.error('Error fetching data:', error));
+
+    // refresh player positions
+    setInterval(() => {
+        console.log('Updating player pos...');
+
+        fetch('/map/live')
+            .then(response => response.json())
+            .then(data => {
+                players = data.players;
+                console.log('Data recieved: ', data)
+                updatePlayerPositions(ctx, players, canvas, mapImage)
+            })
+            .catch(error => console.error('Error fetching data:', error));
+
+    }, 10 * 1000);
 });
 
-function resizeCanvas() {
-    let canvas = document.getElementById('gameMapCanvas');
+function resizeCanvas(canvas) {
     let container = document.getElementById('mapContainer');
 
     canvas.width = container.clientWidth;
@@ -63,46 +100,41 @@ function resizeCanvas() {
 }
 
 function drawMap(ctx, mapImage) {
-    const canvas = document.getElementById('gameMapCanvas');
+    let canvas = document.getElementById('gameMapCanvas');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(mapImage, 0, 0, canvas.width, canvas.height);
 }
 
-function updatePlayerPositions(ctx, players, mapImage) {
-    const canvas = document.getElementById('gameMapCanvas');
-    const scaleX = canvas.width / mapDimensions.width;
-    const scaleY = canvas.height / mapDimensions.height;
-
+function updatePlayerPositions(ctx, players, canvas, mapImage) {
     drawMap(ctx, mapImage);
+    drawPlayer(ctx, players, canvas);
+}
+
+function drawPlayer(ctx, players, canvas) {
+    let scaleX = canvas.width / mapDimensions.width;
+    let scaleY = canvas.height / mapDimensions.height;
 
     players.forEach(player => {
-        if (player.coords.x || player.coords.y) {
-            let { x, y } = playerCoordsToCanvasCoords(player.coords.x, player.coords.y, scaleX, scaleY)
-            drawPlayer(ctx, x, y);
-        }
+        const { x, y } = playerCoordsToCanvasCoords(player.location_x, player.location_y, scaleX, scaleY);
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+
+        ctx.fillStyle = '#FF0000';
+        ctx.fill();
+
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#000000';
+        ctx.stroke();
     });
-
 }
 
-function drawPlayer(ctx, x, y) {
-    ctx.beginPath();
-    ctx.arc(x, y, 10, 0, 2 * Math.PI, false);
-
-    ctx.fillStyle = '#FFD700';
-    ctx.fill();
-
-    ctx.lineWidth = 2;
-
-    ctx.strokeStyle = '#C0C0C0';
-    ctx.stroke();
-}
 
 function handleMouseMove(event, canvas, players, tooltip) {
-    const rect = canvas.getBoundingClientRect();
-    const mouseX = event.clientX - rect.left;
-    const mouseY = event.clientY - rect.top;
-    const scaleX = canvas.width / mapDimensions.width;
-    const scaleY = canvas.height / mapDimensions.height;
+    let rect = canvas.getBoundingClientRect();
+    let mouseX = event.clientX - rect.left;
+    let mouseY = event.clientY - rect.top;
+    let scaleX = canvas.width / mapDimensions.width;
+    let scaleY = canvas.height / mapDimensions.height;
 
     let found = false;
     players.forEach(player => {
@@ -120,7 +152,9 @@ function handleMouseMove(event, canvas, players, tooltip) {
         }
     });
 
-    if (!found) {
+    if (found) {
+        tooltip.style.display = 'block';
+    } else {
         tooltip.style.display = 'none';
     }
 }
@@ -134,7 +168,7 @@ function playerCoordsToCanvasCoords(playerX, playerY, scaleX, scaleY) {
     let x = parseInt(((playerX - minX) / (maxX - minX)) * mapDimensions.width * scaleX);
 
     let y = parseInt(((maxY - playerY) / (maxY - minY)) * mapDimensions.height * scaleY);
-    console.log('transformCoordinates: ', x, y, playerX, playerY)
+    // console.log('transformCoordinates: ', x, y, playerX, playerY)
     return {
         x, y
     }
